@@ -2,3 +2,5 @@ node_modules
 logs
 .env
 logs/app.log
+uploads
+uploads/^

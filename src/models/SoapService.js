@@ -3,17 +3,17 @@ const mongoose = require("mongoose");
 const SoapService = new mongoose.Schema({
   serviceNameHeb: {
     type: String,
-    required: true,
-    unique: true
+    required: false,
+    unique: false
   },
   serviceNameEng: {
     type: String,
-    required: true,
-    unique: true
+    required: false,
+    unique: false
   },
   backendUrlQA: {
     type: String,
-    required: true,
+    required: false,
   },
   backendUrlPRD: {
     type: String,
@@ -21,15 +21,15 @@ const SoapService = new mongoose.Schema({
   },
   businessOwner: {
     type: String,
-    required: true
+    required: false
   },
   techOwner: {
     type: String,
-    required: true
+    required: false
   },
   serviceDetails: {
     type: String,
-    required: true
+    required: false
   },
   serviceDetailsFile: {
     type: String,
@@ -37,11 +37,16 @@ const SoapService = new mongoose.Schema({
   },
   wsdlFile: {
     type: String,
-    required: true
+    required: false
   },
   xsdFiles: {
     type: [],
     required: false
+  },
+  type: {
+    type: String,
+    enum: ['soap'],
+    default: 'soap'
   }
 
 });

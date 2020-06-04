@@ -8,6 +8,7 @@ module.exports = class SoapService extends Service {
     super(properties);
     this.wsdlFile = wsdlFile;
     this.xsdFiles = xsdFiles
+    this.type = "soap"
   }
 
   async addService() {
@@ -44,12 +45,12 @@ module.exports = class SoapService extends Service {
 
 
   }
-  async getService(serviceNameEng) {
+  static async getService(serviceNameEng) {
     let result = null
 
 
     if (serviceNameEng) {
-      result = await SoapServiceQery.find({ serviceNameEng });
+      result = await SoapServiceQery.findOne({ serviceNameEng });
 
     } else {
 

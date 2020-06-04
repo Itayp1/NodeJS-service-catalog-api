@@ -1,5 +1,8 @@
 const Service = require("./Service"),
+  emitter = require("../subscribers/index"),
   mongoose = require("mongoose"),
+  { APROVE_URL_SOAP: aprovmentUrl } = require("../../server.config"),
+
   PendingSoapServiceQery = mongoose.model("PendingSoapService"),
   SoapServiceQery = mongoose.model("SoapService");
 
@@ -25,6 +28,9 @@ module.exports = class SoapService extends Service {
       }
       const pendingSoapServiceQery = PendingSoapServiceQery(this)
       const result = await pendingSoapServiceQery.save();
+
+      emitter.emit("user-aprovment", { aprovmentUrl, ...result._doc });
+
       return result
 
     } catch (error) {
@@ -55,12 +61,13 @@ module.exports = class SoapService extends Service {
 
 
   }
-  async getService(serviceNameEng) {
+
+  static async getService(id) {
     let result = null
 
 
-    if (serviceNameEng) {
-      result = await PendingSoapServiceQery.find({ serviceNameEng });
+    if (id) {
+      result = await PendingSoapServiceQery.findOne({ _id: id });
 
     } else {
 
@@ -77,14 +84,13 @@ module.exports = class SoapService extends Service {
     return result
 
   }
-  static async aprove(id) {
+  async aprove(id) {
 
     // eslint-disable-next-line no-unused-vars
-    let { _doc: { status, ...details } } = await PendingSoapServiceQery.findByIdAndDelete(
+    await PendingSoapServiceQery.findByIdAndDelete(
       { _id: id }
     );
-    console.log(details)
-    const soapServiceQery = SoapServiceQery(details)
+    const soapServiceQery = SoapServiceQery(this)
 
     const result = await soapServiceQery.save();
 

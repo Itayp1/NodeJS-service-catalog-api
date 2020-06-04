@@ -3,7 +3,7 @@ const models = require("../models")();
 const expressLoader = require("./express");
 const Logger = require("./looger");
 // const redis = require("./redis");
-require("../subscribers/send_email_on_registration");
+require("../subscribers/index");
 module.exports = async app => {
   await mongooseLoader();
   Logger.info("✌️ MONGO DB loaded and connected!");

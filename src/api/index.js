@@ -1,19 +1,23 @@
 const router = require("express").Router(),
   SERVICES = require("./routes/Services"),
+  PENDING = require("./routes/Pending"),
+  APROVE = require("./routes/Aprove.js"),
+  STATUS = require("./routes/Status.js"),
+  SWAGGER = require("./routes/swagger"),
   CREATESERVICE = require("./routes/CreateService");
 
-// const swaggerUi = require('swagger-ui-express');
-// const fs = require("fs")
-// const swaggerDocument = require('./swagger.json');
+const { serve } = require('swagger-ui-express');
 
 
-// router.use('/api-docs', swaggerUi.serve);
-// router.get('/api-docs/:id', (req, res, next) => { console.log(req.params.id), req.swaggerDoc = JSON.parse(fs.readFileSync(`C:/Intel/Logs/${req.params.id}.json`)), next() }, swaggerUi.setup(swaggerDocument));
 
+router.use('/api-docs', serve);
+router.get('/api-docs/:serviceNameEng', SWAGGER())
+
+// swaggerUi.setup(req.swaggerDoc))
 
 // router.use('/api-docs', (req, res, next) => {
-//  const swaggerDocument =  
-//   console.log("ssssss")
+//   const swaggerDocument =
+//     console.log("ssssss")
 //   res.locals.swaggerDocument = swaggerDocument;
 //   next()
 // })
@@ -28,7 +32,11 @@ const router = require("express").Router(),
 // SendEmail = require("./routes/menora/sendEmail"),
 // Rating = require("./routes/Rating"),
 // UpdateInfo = require("./routes/Information");
+router.use("/services/pending", PENDING);
+
 router.use("/services", SERVICES);
+router.use("/services/status", STATUS);
+router.use("/services/aprove", APROVE);
 router.use("/createservice", CREATESERVICE);
 
 

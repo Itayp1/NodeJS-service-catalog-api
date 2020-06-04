@@ -1,31 +1,34 @@
 const router = require("express").Router();
 const CreateRestService = require("../../services/CreateRestService");
 const CreateSoapService = require("../../services/CreateSoapService");
+var multer = require('multer')
+const bodyParser = require("body-parser");
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/swagger')
+    },
+    filename: function (req, file, cb) {
 
-require("express-async-errors");
+        cb(null, file.fieldname)
+    }
+})
+
+const upload = multer({ storage: storage })
+
+// var upload = multer();
+// require("express-async-errors");
 
 
 
+router.get("/", async (req, res) => {
 
-router.get("/soap", async (req, res) => {
-    const soapService = new CreateSoapService(req.body)
-    const response = await soapService.getService()
-    return res.json(response);
+    const soapServices = await CreateSoapService.getService()
+    const restServices = await CreateRestService.getService()
+    const services = [...soapServices, ...restServices]
+    return res.json(services);
 });
 
-router.get("/soap/:id", async (req, res) => {
 
-    const { id } = req.params
-    const soapService = new CreateSoapService(req.body)
-    const response = await soapService.getService(id)
-    return res.json(response);
-});
-
-router.put("/soap/aprove/:id", async (req, res) => {
-    const { id } = req.params
-    const response = await CreateSoapService.aprove(id)
-    return res.json(response);
-});
 
 router.put("/soap/reject/:id", async (req, res) => {
     const { id } = req.params
@@ -39,6 +42,7 @@ router.put("/soap/pendingdetails", async (req, res) => {
     const response = await soapService.pendingdetails(_id)
     return res.json(response);
 });
+
 router.post("/soap", async (req, res) => {
     const soapService = new CreateSoapService(req.body)
     const response = await soapService.addService()
@@ -49,20 +53,6 @@ router.post("/soap", async (req, res) => {
 
 
 
-router.get("/rest", async (req, res) => {
-    const restService = new CreateRestService(req.body)
-    const response = await restService.getService()
-    return res.json(response);
-});
-
-router.get("/rest/:id", async (req, res) => {
-
-    const { id } = req.params
-    const restService = new CreateRestService(req.body)
-    const response = await restService.getService(id)
-    return res.json(response);
-});
-
 router.put("/rest", async (req, res) => {
     const restService = new CreateRestService(req.body)
     const response = await restService.updateService(req.body)
@@ -70,11 +60,21 @@ router.put("/rest", async (req, res) => {
 });
 
 
-router.post("/rest", async (req, res) => {
-    const restService = new CreateRestService(req.body)
-    const response = await restService.addService()
-    return res.json(response);
-});
+router.post("/rest", upload.single('swaggerFile'), bodyParser.json()
+    , async (req, res) => {
+
+
+        // console.log("req.files")
+        // console.log(req.body.json)
+        // let buff = Buffer.from(req.file.buffer);
+        // let base64data = buff.toString('base64');
+        // console.log(base64data)
+        req.body.json.swaggerFile = req.file.fieldname
+        const restService = new CreateRestService(req.body.josn)
+        const response = await restService.addService()
+        return res.json(response);
+
+    });
 
 
 

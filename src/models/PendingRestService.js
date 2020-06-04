@@ -11,13 +11,9 @@ const PendingRestServiceSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  backendUrlQA: {
+  backendUrl: {
     type: String,
     required: true,
-  },
-  backendUrlPRD: {
-    type: String,
-    required: false
   },
   businessOwner: {
     type: String,
@@ -41,8 +37,15 @@ const PendingRestServiceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pendingAprove', 'Aproved', 'rejected', 'PendingDetails'],
+    enum: ['pendingAprove', 'Aproved', 'rejected', 'PendingDetails', "finished"],
     default: 'pendingAprove'
+  },
+  type: {
+    type: String,
+    enum: ['rest'],
+    default: 'rest'
+
+
   }
 });
 

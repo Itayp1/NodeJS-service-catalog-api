@@ -19,5 +19,8 @@ module.exports = {
   OAUTH_FACEBOOK: process.env.OAUTH_FACEBOOK,
   OAUTH_GOOGLE: process.env.OAUTH_GOOGLE,
   CLIENT_ID: process.env.CLIENT_ID,
-  APIGURID: process.env.APIGURID
+  APIGURID: process.env.APIGURID,
+  APROVE_URL_REST: process.env.APROVE_URL_REST,
+  APROVE_URL_SOAP: process.env.APROVE_URL_SOAP,
+
 };

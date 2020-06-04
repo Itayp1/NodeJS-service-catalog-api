@@ -1,4 +1,4 @@
-const GenHtmlRegistration = name => {
+const GenHtmlRegistration = ({ serviceNameHeb, aprovmentUrl }) => {
   const htmlBody = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -88,26 +88,31 @@ const GenHtmlRegistration = name => {
                         <h1
                           style="margin-top: 0; color: #2F3133; font-size: 19px; font-weight: bold; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; -webkit-box-sizing: border-box; box-sizing: border-box;"
                         >
-                          שלום ${name}
+                          בקשה חשיפה לשירות 
                         </h1>
   
                         <p
                           style="margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; -webkit-box-sizing: border-box; box-sizing: border-box;"
                         >
-                          Teacher4Uברוך הבא ל
+                          שם השירות  ${serviceNameHeb}
+
                         </p>
   
                         <p
                           style="margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; -webkit-box-sizing: border-box; box-sizing: border-box;"
                         >
-                          לכל שאלה או בקשה יש להשיב למייל זה ואנו נחזור אליך
+                        <p><a href="${aprovmentUrl}">לחץ כאן</a> לפתיחת פרטי הבקשה</p>
+
+                      
+                         
+
                         </p>
   
                         <p
                           style="margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; -webkit-box-sizing: border-box; box-sizing: border-box;"
                         >
                           המשך יום מהנה <br />
-                          Teacher4U
+                          
                         </p>
                       </td>
                     </tr>

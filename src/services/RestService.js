@@ -7,6 +7,8 @@ module.exports = class RestService extends Service {
   constructor({ swaggerFile, ...properties }) {
     super(properties);
     this.swaggerFile = swaggerFile;
+    this.type = "rest"
+
   }
 
   async addService() {
@@ -45,12 +47,12 @@ module.exports = class RestService extends Service {
 
   }
 
-  async getService(serviceNameEng) {
+  static async getService(serviceNameEng) {
     let result = null
 
 
     if (serviceNameEng) {
-      result = await RestServiceQery.find({ serviceNameEng });
+      result = await RestServiceQery.findOne({ serviceNameEng });
 
     } else {
 

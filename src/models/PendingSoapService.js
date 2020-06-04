@@ -11,13 +11,9 @@ const PendingSoapServiceSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  backendUrlQA: {
+  backendUrl: {
     type: String,
     required: true,
-  },
-  backendUrlPRD: {
-    type: String,
-    required: false
   },
   businessOwner: {
     type: String,
@@ -37,7 +33,7 @@ const PendingSoapServiceSchema = new mongoose.Schema({
   },
   wsdlFile: {
     type: String,
-    required: true
+    required: false
   },
   xsdFiles: {
     type: [],
@@ -47,6 +43,14 @@ const PendingSoapServiceSchema = new mongoose.Schema({
     type: String,
     enum: ['pendingAprove', 'Aproved', 'rejected', 'PendingDetails'],
     default: 'pendingAprove'
+  },
+  type: {
+    type: String,
+    enum: ['soap'],
+    default: 'soap'
+
+
+
   }
 
 });
