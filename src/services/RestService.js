@@ -56,7 +56,8 @@ module.exports = class RestService extends Service {
 
     } else {
 
-      result = await RestServiceQery.find();
+      result = await RestServiceQery.find().select("-swaggerFile");
+
     }
     return result
 

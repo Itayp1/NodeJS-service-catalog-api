@@ -1,18 +1,33 @@
 const { path } = require('app-root-path');
+const RestService = require("../../services/RestService");
+const SoapService = require("../../services/SoapService");
 
 const { generateHTML } = require('swagger-ui-express');
 
 
 
-module.exports = function () {
-    return function (req, res) {
+module.exports = () => {
+    return async (req, res) => {
 
         const { serviceNameEng } = req.params
 
-        const swaggerDocument = require(`${path}/swaggers/${serviceNameEng}.json`);
+        let service
 
-        var html = generateHTML(swaggerDocument)
+        service = await SoapService.getService(serviceNameEng)
+        if (!service) {
+
+            service = await RestService.getService(serviceNameEng)
+        }
+
+        if (!service) {
+            return res.status(404).send()
+        }
+        const { swaggerFile } = service
+
+        var html = generateHTML(JSON.parse(swaggerFile))
         res.send(html)
+
+        return
 
     }
 }

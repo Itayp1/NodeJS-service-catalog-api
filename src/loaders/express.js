@@ -52,7 +52,8 @@ module.exports = app => {
 
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
-    Logger.error(`message:${err.message || err}`);
+    Logger.error(`message:${err.stack || err}`);
+
     // Any request to this server will get here, and will send an HTTP
     const status = err.status || 500;
 

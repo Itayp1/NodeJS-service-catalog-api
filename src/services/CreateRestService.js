@@ -10,6 +10,7 @@ module.exports = class RestService extends Service {
   constructor({ swaggerFile, ...properties }) {
     super(properties);
     this.swaggerFile = swaggerFile;
+    this.swaggerFileExist = swaggerFile != ""
   }
 
   async addService() {
@@ -84,11 +85,11 @@ module.exports = class RestService extends Service {
 
     // eslint-disable-next-line no-unused-vars
 
-    await PendingRestServiceQery.findByIdAndDelete(
+    const isExist = await PendingRestServiceQery.findByIdAndDelete(
       { _id: id }
     );
 
-    const soapServiceQery = RestServiceQery(this)
+    const soapServiceQery = RestServiceQery({ ...this, swaggerFile: isExist.swaggerFile })
 
     const result = await soapServiceQery.save();
 

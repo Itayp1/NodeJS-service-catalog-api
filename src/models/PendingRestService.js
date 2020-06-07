@@ -35,6 +35,11 @@ const PendingRestServiceSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+
+  swaggerFileExist: {
+    type: String,
+    required: false
+  },
   status: {
     type: String,
     enum: ['pendingAprove', 'Aproved', 'rejected', 'PendingDetails', "finished"],

@@ -3,18 +3,19 @@ const CreateRestService = require("../../services/CreateRestService");
 const CreateSoapService = require("../../services/CreateSoapService");
 var multer = require('multer')
 const bodyParser = require("body-parser");
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '/swagger')
-    },
-    filename: function (req, file, cb) {
 
-        cb(null, file.fieldname)
-    }
-})
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'C:/projects/react/service-ctalog-api/swaggers')
+//     },
+//     filename: function (req, file, cb) {
 
+//         cb(null, file.fieldname)
+//     }
+// })
+const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-
+// const upload = multer({ dest: 'uploads/' })
 // var upload = multer();
 // require("express-async-errors");
 
@@ -64,13 +65,16 @@ router.post("/rest", upload.single('swaggerFile'), bodyParser.json()
     , async (req, res) => {
 
 
-        // console.log("req.files")
+
         // console.log(req.body.json)
         // let buff = Buffer.from(req.file.buffer);
         // let base64data = buff.toString('base64');
         // console.log(base64data)
-        req.body.json.swaggerFile = req.file.fieldname
-        const restService = new CreateRestService(req.body.josn)
+        const swaggerFile = req.file.buffer.toString("utf8")
+        const request = { ...JSON.parse(req.body.json), swaggerFile }
+
+
+        const restService = new CreateRestService(request)
         const response = await restService.addService()
         return res.json(response);
 

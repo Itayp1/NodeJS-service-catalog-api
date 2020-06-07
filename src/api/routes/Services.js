@@ -20,14 +20,22 @@ router.get("/", async (req, res) => {
 router.get("/soap", async (req, res) => {
     const soapService = new SoapService(req.body)
     const response = await soapService.getService()
+    if (response == null) {
+        return res.status(404).send()
+
+    }
     return res.json(response);
 });
 
 router.get("/soap/:serviceNameEng", async (req, res) => {
 
     const { serviceNameEng } = req.params
-    const soapService = new SoapService(req.body)
-    const response = await soapService.getService(serviceNameEng)
+
+    const response = await SoapService.getService(serviceNameEng)
+    if (response == null) {
+        return res.status(404).send()
+
+    }
     return res.json(response);
 });
 
