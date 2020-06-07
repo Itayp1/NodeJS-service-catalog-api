@@ -30,7 +30,6 @@ router.get("/rest/:id", async (req, res) => {
 
     const { id } = req.params
     const { serviceNameHeb, serviceNameEng, backendUrl, businessOwner, techOwner, serviceDetails } = await CreateRestService.getService(id)
-    console.log(serviceNameHeb)
     return res.json({ serviceNameHeb, serviceNameEng, backendUrl, businessOwner, techOwner, serviceDetails });
 });
 

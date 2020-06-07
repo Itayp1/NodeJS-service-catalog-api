@@ -1,4 +1,3 @@
-const { path } = require('app-root-path');
 const RestService = require("../../services/RestService");
 const SoapService = require("../../services/SoapService");
 
