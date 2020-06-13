@@ -13,8 +13,6 @@ router.get("/:type/:serviceNameEng", async (req, res) => {
     const service = await Status(type, serviceNameEng)
 
 
-
-
     return res.json(service);
 });
 

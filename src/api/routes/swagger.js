@@ -1,5 +1,5 @@
-const RestService = require("../../services/RestService");
-const SoapService = require("../../services/SoapService");
+
+const FileStorage = require("../../services/FileStorage");
 
 const { generateHTML } = require('swagger-ui-express');
 
@@ -10,18 +10,16 @@ module.exports = () => {
 
         const { serviceNameEng } = req.params
 
-        let service
 
-        service = await SoapService.getService(serviceNameEng)
-        if (!service) {
 
-            service = await RestService.getService(serviceNameEng)
-        }
 
-        if (!service) {
+        const swaggerFile = await FileStorage.readFile(serviceNameEng, "json")
+
+
+        if (!swaggerFile) {
             return res.status(404).send()
         }
-        const { swaggerFile } = service
+
 
         var html = generateHTML(JSON.parse(swaggerFile))
         res.send(html)

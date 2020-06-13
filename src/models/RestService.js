@@ -11,13 +11,9 @@ const RestService = new mongoose.Schema({
     required: false,
     unique: false
   },
-  backendUrlQA: {
+  backendUrl: {
     type: String,
     required: false,
-  },
-  backendUrlPRD: {
-    type: String,
-    required: false
   },
   businessOwner: {
     type: String,
@@ -31,14 +27,11 @@ const RestService = new mongoose.Schema({
     type: String,
     required: false
   },
-  serviceDetailsFile: {
+  serviceDetailsFileExist: {
     type: String,
     required: false
   },
-  swaggerFile: {
-    type: String,
-    required: false
-  },
+
   swaggerFileExist: {
     type: String,
     required: false

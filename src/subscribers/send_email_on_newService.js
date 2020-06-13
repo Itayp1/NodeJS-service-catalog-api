@@ -7,7 +7,6 @@ const Logger = require("../loaders/looger");
 module.exports = ({ _id, aprovmentUrl, ...obj }) => {
   aprovmentUrl = `${aprovmentUrl}/${_id}`
   const props = { ...obj, aprovmentUrl };
-  console.log(obj)
   const htmlBody = mailgen(props);
   const subject = `בקשה לאישור שירות חדש`;
 

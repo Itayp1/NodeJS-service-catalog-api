@@ -7,7 +7,7 @@ const router = require("express").Router(),
 require("express-async-errors");
 
 router.post("/teacher", verifyUserByToken, userExist, async ({ body }, res) => {
-  console.log("inteacher");
+  // console.log("inteacher");
   const registration = new Registration(body);
   const response = await registration.registerAsTeacher();
   const jsonWebToken = new JsonWebToken(response);
@@ -16,12 +16,12 @@ router.post("/teacher", verifyUserByToken, userExist, async ({ body }, res) => {
 });
 
 router.post("/student", verifyUserByToken, userExist, async ({ body }, res) => {
-  console.log("instudent");
+  // console.log("instudent");
   const registration = new Registration(body);
   const response = await registration.registerAsStudent();
   const jsonWebToken = new JsonWebToken(response);
   const jwt = jsonWebToken.createJwt();
-  console.log(`response : ${JSON.stringify(jwt)}`);
+  // console.log(`response : ${JSON.stringify(jwt)}`);
   res.send({ jwt });
 });
 

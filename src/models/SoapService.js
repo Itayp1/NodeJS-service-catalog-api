@@ -11,13 +11,9 @@ const SoapService = new mongoose.Schema({
     required: false,
     unique: false
   },
-  backendUrlQA: {
+  backendUrl: {
     type: String,
-    required: false,
-  },
-  backendUrlPRD: {
-    type: String,
-    required: false
+    required: true,
   },
   businessOwner: {
     type: String,
@@ -31,16 +27,16 @@ const SoapService = new mongoose.Schema({
     type: String,
     required: false
   },
-  serviceDetailsFile: {
+  serviceDetailsFileExist: {
     type: String,
     required: false
   },
-  wsdlFile: {
+  xsdFileExist: {
     type: String,
     required: false
   },
-  xsdFiles: {
-    type: [],
+  wsdlFileExist: {
+    type: String,
     required: false
   },
   type: {

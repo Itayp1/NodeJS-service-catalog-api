@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const RestService = require("../../services/RestService");
 const SoapService = require("../../services/SoapService");
+const FileStorage = require("../../services/FileStorage");
 
 require("express-async-errors");
 
@@ -16,6 +17,23 @@ router.get("/", async (req, res) => {
     return res.json(services);
 });
 
+
+
+router.get("/getFile/:fileName", async (req, res) => {
+
+    const { fileName } = req.params
+    const [serviceName, type] = fileName.split(".")
+
+    const file = await FileStorage.readFile(serviceName, type)
+
+    res.writeHead(200, {
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Type': type,
+    })
+    return res.end(file)
+
+
+})
 
 router.get("/soap", async (req, res) => {
     const soapService = new SoapService(req.body)

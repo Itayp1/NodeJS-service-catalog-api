@@ -9,10 +9,10 @@ const Service = require("./Service"),
 // CError = require("../services/CustomError"),
 
 module.exports = class SoapService extends Service {
-  constructor({ wsdlFile, xsdFiles, ...properties }) {
+  constructor({ wsdlFileExist, xsdFileExist, ...properties }) {
     super(properties);
-    this.wsdlFile = wsdlFile;
-    this.xsdFiles = xsdFiles
+    this.wsdlFileExist = wsdlFileExist;
+    this.xsdFileExist = xsdFileExist
   }
 
   async addService() {
@@ -20,7 +20,6 @@ module.exports = class SoapService extends Service {
       const { serviceNameHeb, serviceNameEng } = this
 
       const isExist = await SoapServiceQery.find({ $or: [{ serviceNameHeb }, { serviceNameEng }] })
-      console.log(isExist)
       if (isExist.length > 0) {
         const err = new Error("duplicate service")
         err.status = 409
@@ -87,10 +86,14 @@ module.exports = class SoapService extends Service {
   async aprove(id) {
 
     // eslint-disable-next-line no-unused-vars
-    await PendingSoapServiceQery.findByIdAndDelete(
+    const { serviceDetailsFileExist, xsdFileExist, wsdlFileExist, ...other } = await PendingSoapServiceQery.findByIdAndDelete(
       { _id: id }
     );
-    const soapServiceQery = SoapServiceQery(this)
+    if (!other) {
+      throw new Error("service not found")
+    }
+
+    const soapServiceQery = SoapServiceQery({ ...this, serviceDetailsFileExist, xsdFileExist, wsdlFileExist })
 
     const result = await soapServiceQery.save();
 

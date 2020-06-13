@@ -27,14 +27,11 @@ const PendingRestServiceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  serviceDetailsFile: {
+  serviceDetailsFileExist: {
     type: String,
     required: false
   },
-  swaggerFile: {
-    type: String,
-    required: false
-  },
+
 
   swaggerFileExist: {
     type: String,

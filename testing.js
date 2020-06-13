@@ -12,4 +12,3 @@ const json = {
   __v: 0
 };
 
-console.log(json.hasReview);

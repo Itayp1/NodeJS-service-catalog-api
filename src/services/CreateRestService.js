@@ -3,40 +3,90 @@ const Service = require("./Service"),
   { APROVE_URL_REST: aprovmentUrl } = require("../../server.config"),
 
   mongoose = require("mongoose"),
+  fs = require("fs"),
+  fsPromises = fs.promises,
+
   PendingRestServiceQery = mongoose.model("PendingRestService"),
   RestServiceQery = mongoose.model("RestService");
 
+
 module.exports = class RestService extends Service {
-  constructor({ swaggerFile, ...properties }) {
+  constructor({ swaggerFileExist, serviceDetailsFileExist, ...properties }) {
     super(properties);
-    this.swaggerFile = swaggerFile;
-    this.swaggerFileExist = swaggerFile != ""
+    this.swaggerFileExist = swaggerFileExist
+    this.serviceDetailsFileExist = serviceDetailsFileExist
   }
 
+  static async saveFile(file, serviceNameEng, type) {
+
+    // eslint-disable-next-line no-undef
+    const base = `${process.cwd()}/uploads/services/${serviceNameEng}`
+    // eslint-disable-next-line no-unused-vars
+    const { fieldname, buffer } = file
+    try {
+      await fsPromises.mkdir(base)
+
+    } catch (error) {
+      if (error.errno == -4075) {
+        console.log("folder exist ")
+      }
+      else {
+        throw error
+      }
+    }
+
+    switch (type) {
+      case "docx":
+
+        await fsPromises.writeFile(`${base}/${serviceNameEng}.docx`, buffer, () => { })
+        break;
+
+      case "xsd":
+
+        await fsPromises.writeFile(`${base}/${serviceNameEng}.xsd`, buffer, () => { })
+        break;
+      case "wsdl":
+
+        await fsPromises.writeFile(`${base}/${serviceNameEng}.wsdl`, buffer, () => { })
+        break;
+
+      case "json":
+
+        await fsPromises.writeFile(`${base}/${serviceNameEng}.json`, buffer, () => { })
+        break;
+      default:
+        break;
+    }
+
+
+
+  }
   async addService() {
     const { serviceNameHeb, serviceNameEng } = this
 
     const isExist = await RestServiceQery.find({ $or: [{ serviceNameHeb }, { serviceNameEng }] })
-    console.log(isExist)
     if (isExist.length > 0) {
       const err = new Error("duplicate service")
       err.status = 409
       throw err
     }
     const pendingRestServiceQery = PendingRestServiceQery(this)
+
     try {
-      const result = await pendingRestServiceQery.save();
+
+      const result = await pendingRestServiceQery.save()
+
       emitter.emit("user-aprovment", { aprovmentUrl, ...result._doc });
       return result
 
-    } catch ({ code, errmsg }) {
-      console.log(errmsg)
+    } catch (error) {
+      const { code } = error;
       if (code == 11000) {
         const err = new Error("duplicate service")
         err.status = 409
         throw err
       } else {
-        throw code
+        throw error
       }
 
     }
@@ -85,12 +135,13 @@ module.exports = class RestService extends Service {
 
     // eslint-disable-next-line no-unused-vars
 
-    const isExist = await PendingRestServiceQery.findByIdAndDelete(
+    const { serviceDetailsFileExist, swaggerFileExist, ...other } = await PendingRestServiceQery.findByIdAndDelete(
       { _id: id }
     );
-
-    const soapServiceQery = RestServiceQery({ ...this, swaggerFile: isExist.swaggerFile })
-
+    if (!other) {
+      throw new Error("service not found")
+    }
+    const soapServiceQery = RestServiceQery({ ...this, serviceDetailsFileExist, swaggerFileExist })
     const result = await soapServiceQery.save();
 
     return result

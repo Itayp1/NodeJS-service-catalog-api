@@ -6,7 +6,7 @@ const router = require("express").Router(),
 router.post("/add", ValidateJwt, addReviewValidation, async (req, res) => {
   const { rating, review, teacherEmail, lessonId, cource } = req.body;
   const { fullName: studentName } = res.locals.jwt;
-  console.log(studentName);
+  // console.log(studentName);
   const ratingObj = new Rating(
     teacherEmail,
     lessonId,
@@ -26,7 +26,7 @@ router.get("/:teacherEmail", ValidateJwt, async (req, res) => {
   if (!teacherEmail) {
     teacherEmail = req.body.email;
   }
-  console.log(teacherEmail);
+  // console.log(teacherEmail);
   const rating = new Rating(teacherEmail);
   const listOfReviews = await rating.getReviews();
 
@@ -35,7 +35,7 @@ router.get("/:teacherEmail", ValidateJwt, async (req, res) => {
 router.get("/", ValidateJwt, async (req, res) => {
   const teacherEmail = req.body.email;
 
-  console.log(teacherEmail);
+  // console.log(teacherEmail);
   const rating = new Rating(teacherEmail);
   const listOfReviews = await rating.getReviews();
 

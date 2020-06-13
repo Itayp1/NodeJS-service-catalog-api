@@ -10,10 +10,8 @@ const getStatus = async (type, serviceNameEng) => {
 
     let response
     if (type === 'rest') {
-        console.log(type, serviceNameEng)
 
         response = await PendingRestService.findOne({ serviceNameEng });
-        console.log(response)
 
     } else {
 

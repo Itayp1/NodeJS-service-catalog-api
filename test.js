@@ -21,4 +21,3 @@ const days = {
   "7": "שבת"
 };
 
-console.log(days[1]);

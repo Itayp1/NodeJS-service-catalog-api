@@ -27,16 +27,16 @@ const PendingSoapServiceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  serviceDetailsFile: {
+  serviceDetailsFileExist: {
     type: String,
     required: false
   },
-  wsdlFile: {
+  wsdlFileExist: {
     type: String,
     required: false
   },
-  xsdFiles: {
-    type: [],
+  xsdFileExist: {
+    type: String,
     required: false
   },
   status: {

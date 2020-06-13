@@ -29,7 +29,7 @@ module.exports = app => {
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(({ body, headers }, res, next) => {
-    if (headers["content-length"] < 1000) {
+    if (headers["content-length"] < 100) {
       console.log(body);
     }
     // console.log(headers.authorization);

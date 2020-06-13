@@ -6,7 +6,7 @@ const Logger = require("../loaders/looger");
 
 // eslint-disable-next-line no-unused-vars
 module.exports = obj => {
-  console.log(JSON.stringify(obj));
+
   const { studentName, teacherName, date, time, status, studentEmail } = obj;
   const htmlBody = mailgen(studentName, teacherName, date, time, status);
   const subject = `התקבל עדכון מהמורה Teacher4U`;

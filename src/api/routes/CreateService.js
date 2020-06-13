@@ -44,8 +44,28 @@ router.put("/soap/pendingdetails", async (req, res) => {
     return res.json(response);
 });
 
-router.post("/soap", async (req, res) => {
-    const soapService = new CreateSoapService(req.body)
+router.post("/soap", upload.fields([{ name: 'wsdlFile', maxCount: 1 }, { name: 'xsdFile', maxCount: 1 }, { name: 'serviceDetailsFile', maxCount: 1 }]), bodyParser.json(), async (req, res) => {
+    const wsdlFileExist = req.files["wsdlFile"] ? "true" : "false"
+    const xsdFileExist = req.files["xsdFile"] ? "true" : "false"
+    const serviceDetailsFileExist = req.files["serviceDetailsFile"] ? "true" : "false"
+
+    const request = { ...JSON.parse(req.body.json), wsdlFileExist, xsdFileExist, serviceDetailsFileExist }
+
+    if (wsdlFileExist == "true") {
+        await CreateRestService.saveFile(req.files["wsdlFile"][0], request.serviceNameEng, "wsdl")
+
+    }
+
+    if (xsdFileExist == "true") {
+
+        await CreateRestService.saveFile(req.files["xsdFile"][0], request.serviceNameEng, "xsd")
+    }
+    if (serviceDetailsFileExist == "true") {
+
+        await CreateRestService.saveFile(req.files["serviceDetailsFile"][0], request.serviceNameEng, "docx")
+    }
+
+    const soapService = new CreateSoapService(request)
     const response = await soapService.addService()
     return res.json(response);
 
@@ -61,21 +81,23 @@ router.put("/rest", async (req, res) => {
 });
 
 
-router.post("/rest", upload.single('swaggerFile'), bodyParser.json()
+router.post("/rest", upload.fields([{ name: 'swaggerFile', maxCount: 1 }, { name: 'serviceDetailsFile', maxCount: 1 }]), bodyParser.json()
     , async (req, res) => {
 
-
-
-        // console.log(req.body.json)
-        // let buff = Buffer.from(req.file.buffer);
-        // let base64data = buff.toString('base64');
-        // console.log(base64data)
-        const swaggerFile = req.file.buffer.toString("utf8")
-        const request = { ...JSON.parse(req.body.json), swaggerFile }
-
-
+        const swaggerFileExist = req.files["swaggerFile"] ? "true" : "false"
+        const serviceDetailsFileExist = req.files["serviceDetailsFile"] ? "true" : "false"
+        const request = { ...JSON.parse(req.body.json), swaggerFileExist, serviceDetailsFileExist }
         const restService = new CreateRestService(request)
         const response = await restService.addService()
+        if (swaggerFileExist == "true") {
+            await CreateRestService.saveFile(req.files["swaggerFile"][0], request.serviceNameEng, "json")
+
+        }
+
+        if (serviceDetailsFileExist == "true") {
+
+            await CreateRestService.saveFile(req.files["serviceDetailsFile"][0], request.serviceNameEng, "docx")
+        }
         return res.json(response);
 
     });

@@ -1,5 +1,5 @@
 module.exports = class Service {
-  constructor({ serviceNameHeb, serviceNameEng, backendUrl, businessOwner, techOwner, serviceDetails, serviceDetailsFile }) {
+  constructor({ serviceNameHeb, serviceNameEng, backendUrl, businessOwner, techOwner, serviceDetails, serviceDetailsFileExist }) {
     // prettier-ignore
     this.serviceNameHeb = serviceNameHeb,
       this.serviceNameEng = serviceNameEng,
@@ -7,7 +7,7 @@ module.exports = class Service {
       this.businessOwner = businessOwner,
       this.techOwner = techOwner,
       this.serviceDetails = serviceDetails,
-      this.serviceDetailsFile = serviceDetailsFile;
+      this.serviceDetailsFileExist = serviceDetailsFileExist;
 
   }
 };

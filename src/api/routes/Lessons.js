@@ -26,7 +26,7 @@ router.post(
       studentName
     } = req.body;
     const { email: studentEmail, phone } = res.locals.jwt;
-    console.log(studentEmail, studentName);
+    // console.log(studentEmail, studentName);
     const lesson = new Lesson(
       teacherEmail,
       teacherName,
@@ -45,7 +45,7 @@ router.post(
 router.get("/timetable", ValidateJwt, async ({ body }, res) => {
   const email = body.query || body.email;
   const { profile } = res.locals.jwt;
-  console.log(email, profile);
+  // console.log(email, profile);
   const timeTable = new Lesson(email);
 
   let result = await timeTable.getTimeTable(email, profile);
@@ -57,7 +57,7 @@ router.put("/timetable", ValidateJwt, async ({ body }, res) => {
   const timeTable = new Lesson();
 
   const result = await timeTable.updateTimeTable(id, status);
-  console.log(result);
+  // console.log(result);
   res.json({ updated: result });
 });
 module.exports = router;
