@@ -1,11 +1,15 @@
 /* eslint-disable no-undef */
 const express = require("express"),
-  app = express(),
+  serverless = require('serverless-http');
+
+app = express(),
   loaders = require("./loaders"),
   Logger = require("./loaders/looger"),
   conf = require("../server.config");
+
 const startServer = async () => {
   await loaders(app);
+
   app.listen(conf.PORT, err => {
     if (err) {
       Logger.error(err);
@@ -21,6 +25,7 @@ const startServer = async () => {
 };
 
 startServer();
+module.exports.handler = serverless(app);
 
 // src
 // │   app.js          # App entry point
