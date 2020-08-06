@@ -6,6 +6,10 @@ const bodyParser = require("body-parser"),
   helmet = require("helmet"),
   compression = require("compression"),
   Logger = require("./looger"),
+  express = require("express"),
+  path = require("path"),
+  // path1 = require("../../public"),
+
   isProduction = process.env.ENV === "production";
 require("express-async-errors");
 
@@ -21,6 +25,7 @@ module.exports = app => {
       .send("UP")
       .end();
   });
+  app.use(express.static(path.join(__dirname, 'build')));
 
   // Enable Cross Origin Resource Sharing to all origins by default
   app.use(cors());
@@ -40,8 +45,13 @@ module.exports = app => {
   //register gzip compression
   app.use(compression());
   // Load API ye32
+
   app.use('/api', routes);
 
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build/index.html'))
+
+  });
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
     const err = new Error("Not Found");
